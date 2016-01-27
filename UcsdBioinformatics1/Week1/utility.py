@@ -1,5 +1,18 @@
 import sys
 
+def count_pattern(dna, pattern):
+    dna = dna.upper()
+    pattern = pattern.upper()
+    count = 0
+    start = 0
+    while True:
+        start = dna.find(pattern, start) + 1
+        if start > 0:
+            count += 1
+        else:
+            return count
+
+
 def get_most_freq_n_mer(dna, n):
     dna = str.upper(dna)
     length = str.__len__(dna)
