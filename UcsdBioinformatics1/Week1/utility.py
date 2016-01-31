@@ -1,5 +1,14 @@
+# coding=utf-8
 import sys
 
+"""
+    PatternCount(Text, Pattern)
+        count ← 0
+        for i ← 0 to |Text| − |Pattern|
+            if Text(i, |Pattern|) = Pattern
+                count ← count + 1
+        return count
+"""
 def count_pattern(dna, pattern):
     dna = dna.upper()
     pattern = pattern.upper()
@@ -12,7 +21,18 @@ def count_pattern(dna, pattern):
         else:
             return count
 
-
+"""
+    FrequentWords(Text, k)
+        FrequentPatterns ← an empty set
+        for i ← 0 to |Text| − k
+            Pattern ← the k-mer Text(i, k)
+            Count(i) ← PatternCount(Text, Pattern)
+        maxCount ← maximum value in array Count
+        for i ← 0 to |Text| − k
+            if Count(i) = maxCount
+                add Text(i, k) to FrequentPatterns
+        return FrequentPatterns
+"""
 def get_most_freq_n_mer(dna, n):
     dna = str.upper(dna)
     length = str.__len__(dna)
@@ -36,6 +56,7 @@ def get_most_freq_n_mer(dna, n):
     print 'Most Frequent n-mer Count: %d' % max_count
     for n_mer in most_freq_n_mers:
         print n_mer
+    return most_freq_n_mers, max_count
 
 
 def get_reverse_complement(dna):
