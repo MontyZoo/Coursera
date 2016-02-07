@@ -1,5 +1,6 @@
 # coding=utf-8
 import sys
+from collections import OrderedDict
 
 """
     PatternCount(Text, Pattern)
@@ -9,6 +10,8 @@ import sys
                 count ← count + 1
         return count
 """
+
+
 def count_pattern(dna, pattern):
     dna = dna.upper()
     pattern = pattern.upper()
@@ -20,6 +23,7 @@ def count_pattern(dna, pattern):
             count += 1
         else:
             return count
+
 
 """
     FrequentWords(Text, k)
@@ -33,11 +37,13 @@ def count_pattern(dna, pattern):
                 add Text(i, k) to FrequentPatterns
         return FrequentPatterns
 """
+
+
 def get_most_freq_n_mer(dna, n):
     dna = str.upper(dna)
     length = str.__len__(dna)
     dict = {}
-    for index in range(0, length-n):
+    for index in range(0, length - n):
         n_mer = dna[index: index + n]
         if dict.__contains__(n_mer):
             dict[n_mer] += 1
@@ -74,3 +80,67 @@ def get_reverse_complement(dna):
         else:
             raise Exception('Invalid DNA base.')
     return complement[::-1]
+
+
+'''
+CODE CHALLENGE: Solve the Pattern Matching Problem.
+     Input: Two strings, Pattern and Genome.
+     Output: A collection of space-separated integers specifying all starting positions where Pattern appears
+     as a substring of Genome.
+'''
+
+
+def match_pattern(dna, pattern, match_rc=False):
+    dna = dna.upper()
+    pattern = pattern.upper()
+    pattern_rc = get_reverse_complement(pattern)
+    locations = []
+    for index in range(len(dna) - len(pattern)):
+        s = dna[index:index + len(pattern)]
+        if s == pattern or (match_rc and s == pattern_rc):
+            locations.append(str(index))
+    print ", ".join(locations)
+    return locations
+
+
+'''
+Clump Finding Problem: Find patterns forming clumps in a string.
+     Input: A string Genome, and integers k, L, and t.
+     Output: All distinct k-mers forming (L, t)-clumps in Genome.
+'''
+
+
+def find_clump(dna, k, t, L):
+    s = dna[0: L]
+    counts = _count_frequencies(s, k)
+    frequent_set = set()
+    for pattern, count in counts.iteritems():
+        if count >= t:
+            frequent_set.add(pattern)
+
+    for index in range(1, len(dna)-L+1):
+        begin = dna[index - 1: index - 1 + k]
+        counts[begin] -= 1
+        end = dna[index + L - k: index + L]
+        _increase_count(counts, end)
+        for pattern, count in counts.iteritems():
+            if count >= t:
+                frequent_set.add(pattern)
+
+    frequency_array = sorted(list(frequent_set))
+    return frequency_array
+
+
+def _count_frequencies(dna, k):
+    dict = {}
+    for index in range(len(dna)-k+1):
+        pattern = dna[index: index + k]
+        _increase_count(dict, pattern)
+    return dict
+
+
+def _increase_count(dict, pattern):
+    if dict.__contains__(pattern):
+        dict[pattern] += 1
+    else:
+        dict[pattern] = 1
