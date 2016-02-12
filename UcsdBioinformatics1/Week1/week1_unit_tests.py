@@ -1,5 +1,5 @@
 import unittest
-from utility import *
+from week1_utility import *
 
 
 class TestUtilityCount(unittest.TestCase):
