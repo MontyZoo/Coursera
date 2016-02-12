@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="59c92489-e8f4-4dd3-95bd-e4e0081eebbf" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Week1/utility.py" afterPath="$PROJECT_DIR$/Week1/utility.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Week1/utility_test.py" afterPath="$PROJECT_DIR$/Week1/utility_test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Week1/week1.py" afterPath="$PROJECT_DIR$/Week1/week1.py" />
     </list>
     <ignored path="UcsdBioinformatics1.iws" />
     <ignored path=".idea/workspace.xml" />
