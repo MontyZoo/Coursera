@@ -1,8 +1,17 @@
 import unittest
 from week2_utility import *
 
+
 def ToString(array):
     return ' '.join([str(value) for value in array])
+
+
+def ResultEqual(expected, actual_list):
+    expected_set = set(expected.split(' '))
+    for actual in actual_list:
+        if not expected_set.__contains__(actual):
+            return False
+    return True
 
 class TestSkew(unittest.TestCase):
     def test_sample(self):
@@ -223,3 +232,177 @@ class TestApproximatePatternCount(unittest.TestCase):
             expected = int(datafile.readline().strip())
         count = approximate_pattern_count(pattern, dna, d)
         self.assertEqual(expected, count)
+
+
+class TestFrequentWordsWithMismatches(unittest.TestCase):
+    def test_sample(self):
+        dna = 'ACGTTGCATGTCGCATGATGCATGAGAGCT'
+        k = 4
+        d = 1
+        words = frequent_words_with_mismatches(dna, k, d)
+        expected = 'GATG ATGC ATGT'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_01(self):
+        dna = 'AAAAAAAAAA'
+        k = 2
+        d = 1
+        words = frequent_words_with_mismatches(dna, k, d)
+        expected = 'AA AC AG CA AT GA TA'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_02(self):
+        dna = 'AGTCAGTC'
+        k = 4
+        d = 2
+        words = frequent_words_with_mismatches(dna, k, d)
+        expected = 'TCTC CGGC AAGC TGTG GGCC AGGT ATCC ACTG ACAC AGAG ATTA TGAC AATT CGTT GTTC GGTA AGCA CATC'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+
+    def test_dataset_03(self):
+        dna = 'AATTAATTGGTAGGTAGGTA'
+        k = 4
+        d = 0
+        words = frequent_words_with_mismatches(dna, k, d)
+        expected = 'GGTA'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_04(self):
+        dna = 'ATA'
+        k = 3
+        d = 1
+        words = frequent_words_with_mismatches(dna, k, d)
+        expected = 'GTA ACA AAA ATC ATA AGA ATT CTA TTA ATG'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_05(self):
+        dna = 'AAT'
+        k = 3
+        d = 0
+        words = frequent_words_with_mismatches(dna, k, d)
+        expected = 'AAT'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_06(self):
+        dna = 'TAGCG'
+        k = 2
+        d = 1
+        words = frequent_words_with_mismatches(dna, k, d)
+        expected = 'GG TG'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_extra_dataset(self):
+        with open('Datasets/FrequentWordsWithMismatchesProblem_data01.txt', 'r') as datafile:
+            datafile.readline()
+            dna = datafile.readline().strip()
+            params = datafile.readline().strip().split(' ')
+            k = int(params[0])
+            d = int(params[1])
+            datafile.readline()
+            expected = datafile.readline().strip()
+        words = frequent_words_with_mismatches(dna, k, d)
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+
+class TestFrequentWordsWithMismatchesAndReverseComplements(unittest.TestCase):
+
+    def test_sample(self):
+        dna = 'ACGTTGCATGTCGCATGATGCATGAGAGCT'
+        k = 4
+        d = 1
+        words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
+        expected = 'ATGT ACAT'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_01(self):
+        dna = 'AAAAAAAAAA'
+        k = 2
+        d = 1
+        words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
+        expected = 'AT TA'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_02(self):
+        dna = 'AGTCAGTC'
+        k = 4
+        d = 2
+        words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
+        expected = 'AATT GGCC'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_03(self):
+        dna = 'AATTAATTGGTAGGTAGGTA'
+        k = 4
+        d = 0
+        words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
+        expected = 'AATT'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_04(self):
+        dna = 'ATA'
+        k = 3
+        d = 1
+        words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
+        expected = 'AAA AAT ACA AGA ATA ATC ATG ATT CAT CTA GAT GTA TAA TAC TAG TAT TCT TGT TTA TTT'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_05(self):
+        dna = 'AAT'
+        k = 3
+        d = 0
+        words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
+        expected = 'AAT ATT'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_dataset_06(self):
+        dna = 'TAGCG'
+        k = 2
+        d = 1
+        words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
+        expected = 'CA CC GG TG'
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))
+
+    def test_extra_dataset(self):
+        with open('Datasets/FrequentWordsWithMismatchesAndReverseComplementsProblem_data01.txt', 'r') as datafile:
+            datafile.readline()
+            dna = datafile.readline().strip()
+            params = datafile.readline().strip().split(' ')
+            k = int(params[0])
+            d = int(params[1])
+            datafile.readline()
+            expected = datafile.readline().strip()
+        words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
+        passed = ResultEqual(expected, words)
+        if not passed:
+            self.assertEqual(expected, ToString(words))

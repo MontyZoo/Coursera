@@ -48,6 +48,43 @@ def approximate_pattern_count_problem():
     print count
 
 
+def frequent_words_with_mismatches_problem():
+    with open('Datasets/FrequentWordsWithMismatchesProblem_data02.txt', 'r') as datafile:
+        dna = datafile.readline().strip()
+        params = datafile.readline().strip().split(' ')
+        k = int(params[0])
+        d = int(params[1])
+    words = frequent_words_with_mismatches(dna, k, d)
+    print ToString(words)
 
-approximate_pattern_count_problem()
 
+def frequent_words_with_mismatches_and_reverse_complements_problem():
+    with open('Datasets/FrequentWordsWithMismatchesAndReverseComplementsProblem_data02.txt', 'r') as datafile:
+        dna = datafile.readline().strip()
+        params = datafile.readline().strip().split(' ')
+        k = int(params[0])
+        d = int(params[1])
+    words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
+    print ToString(words)
+
+frequent_words_with_mismatches_and_reverse_complements_problem()
+
+
+def q2():
+    dna1 = 'CTACAGCAATACGATCATATGCGGATCCGCAGTGGCCGGTAGACACACGT'
+    dna2 = 'CTACCCCGCTGCTCAATGACCGGGACTAAAGAGGCGAAGATTATGGTGTG'
+    hamming = get_hamming_distance(dna1, dna2)
+    print hamming
+
+
+def q3():
+    print ToString(get_minimum_skews('CATTCCAGTACTTCGATGATGGCGTGAAGA'))
+
+
+def q4():
+    print str(approximate_pattern_count('CCC', 'CATGCCATTCGCATTGTCCCAGTGA', 2))
+
+
+def q5():
+    neighbours = frequent_words_with_mismatches('TGCAT', 5, 2)
+    print len(neighbours)

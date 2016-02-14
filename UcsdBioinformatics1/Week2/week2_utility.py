@@ -1,3 +1,4 @@
+from Week1.week1_utility import get_reverse_complement
 
 def skew(dna):
     values = [0]
@@ -99,3 +100,120 @@ def approximate_pattern_count(pattern, dna, mismatches):
     :return: Count occurrence of Pattern appears as a substring of a DNA with at most d mismatches.
     """
     return len(approximate_pattern_matching(pattern, dna, mismatches))
+
+
+def frequent_words_with_mismatches(dna, k, d):
+    """
+    Find the most frequent k-mers with mismatches in a string.
+     Input: A string Text as well as integers k and d. (You may assume k <= 12 and d <= 3.)
+    :param dna: the DNA string
+    :param k: length of k-mer
+    :param d: the maximum hamming distance allowed for a match
+    :return: All most frequent k-mers with up to d mismatches in Text.
+    """
+    array_size = 4 ** k
+    dna_length = len(dna)
+    close = [0] * array_size
+    max_count = 0
+    for i in range(dna_length - k + 1):
+        neighborhood = _get_neighbours(dna[i:i+k], d)
+        for pattern in neighborhood:
+            index = _pattern_to_number(pattern)
+            count = close[index] + 1
+            close[index] = count
+            if count > max_count:
+                max_count = count
+
+    max_indices = []
+    for i in range(array_size):
+        if close[i] == max_count:
+            max_indices.append(i)
+
+    return [_number_to_pattern(index, k) for index in max_indices]
+
+
+def _pattern_to_number(pattern):
+    number = 0
+    for base in pattern:
+        number *= 4
+        number += _base_ids[base]
+    return number
+
+
+def _number_to_pattern(number, size):
+    reverse_array = []
+    for i in range(size):
+        residue = number % 4
+        number /= 4
+        reverse_array.append(_bases[residue])
+    return ''.join(reverse_array[::-1])
+
+
+_bases = ['A', 'C', 'G', 'T']
+_base_ids = {'A': 0, 'C': 1, 'G': 2, 'T': 3}
+
+
+def _get_neighbours(pattern, d):
+    """
+    For a given k-mer Pattern, gets all d-neighborhood with Hamming distance not exceeding d from this k-mer.
+    :param pattern: the k-mer pattern
+    :param d: maximum Hamming distance allowed
+    :return: all d-neighborhood, including the given pattern
+    """
+    neighbours = set()
+    _find_all_neighbours(pattern, '', d, neighbours)
+    return neighbours
+
+
+def _find_all_neighbours(pattern, prefix, d, neighbours):
+    sub_pattern = pattern[1:]
+    for base in _bases:
+        delta_d = 0 if base == pattern[0] else 1
+        new_d = d - delta_d
+        if new_d < 0:
+            continue
+        new_prefix = prefix + base
+        neighbours.add(new_prefix + sub_pattern)
+        if sub_pattern:
+            _find_all_neighbours(sub_pattern, new_prefix, d-delta_d, neighbours)
+
+
+def frequent_words_with_mismatches_and_reverse_complements(dna, k, d):
+    """
+    Find the most frequent k-mers (with mismatches and reverse complements) in a string.
+     Input: A string Text as well as integers k and d. (You may assume k <= 12 and d <= 3.)
+    :param dna: the DNA string
+    :param k: length of k-mer
+    :param d: the maximum hamming distance allowed for a match
+    :return: All k-mers Pattern maximizing the sum Countd(Text, Pattern)+ Countd(Text, Pattern reverse complement)
+             over all possible k-mers.
+    """
+    array_size = 4 ** k
+    dna_length = len(dna)
+    close = [0] * array_size
+    frequency_array = [0] * array_size
+
+    for i in range(dna_length - k + 1):
+        neighbourhood = _get_neighbours(dna[i:i+k], d)
+        for pattern in neighbourhood:
+            index = _pattern_to_number(pattern)
+            close[index] = 1
+
+    max_count = 0
+    for i in range(array_size):
+        if close[i] == 1:
+            pattern = _number_to_pattern(i, k)
+            count = approximate_pattern_count(pattern, dna, d) + \
+                    approximate_pattern_count(get_reverse_complement(pattern), dna, d)
+            frequency_array[i] = count
+            if count > max_count:
+                max_count = count
+
+    max_indices = []
+    for i in range(array_size):
+        if frequency_array[i] == max_count:
+            max_indices.append(i)
+
+    return [_number_to_pattern(index, k) for index in max_indices]
+
+
