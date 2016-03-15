@@ -1,5 +1,5 @@
 from week2_utility import *
-from week2_unit_tests import ToString
+from utilities import ToSingleLineOfString
 
 
 def skew_problem():
@@ -12,7 +12,7 @@ def minimum_skew_problem():
     with open('Datasets/MinimumSkewProblem_data02.txt', 'r') as datafile:
         dna = datafile.readline().strip()
     min_skew_indices = get_minimum_skews(dna)
-    print ToString(min_skew_indices)
+    print ToSingleLineOfString(min_skew_indices)
 
 
 def hamming_distance_problem():
@@ -29,7 +29,7 @@ def approximate_pattern_matching_problem():
         dna = datafile.readline().strip()
         d = int(datafile.readline().strip())
     matching_positions = approximate_pattern_matching(pattern, dna, d)
-    print ToString(matching_positions)
+    print ToSingleLineOfString(matching_positions)
 
 
 def count_approximate_pattern():
@@ -55,7 +55,7 @@ def frequent_words_with_mismatches_problem():
         k = int(params[0])
         d = int(params[1])
     words = frequent_words_with_mismatches(dna, k, d)
-    print ToString(words)
+    print ToSingleLineOfString(words)
 
 
 def frequent_words_with_mismatches_and_reverse_complements_problem():
@@ -65,7 +65,7 @@ def frequent_words_with_mismatches_and_reverse_complements_problem():
         k = int(params[0])
         d = int(params[1])
     words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
-    print ToString(words)
+    print ToSingleLineOfString(words)
 
 frequent_words_with_mismatches_and_reverse_complements_problem()
 
@@ -78,7 +78,7 @@ def q2():
 
 
 def q3():
-    print ToString(get_minimum_skews('CATTCCAGTACTTCGATGATGGCGTGAAGA'))
+    print ToSingleLineOfString(get_minimum_skews('CATTCCAGTACTTCGATGATGGCGTGAAGA'))
 
 
 def q4():

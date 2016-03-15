@@ -1,15 +1,15 @@
 import unittest
 from week2_utility import *
-
-
-def ToString(array):
-    return ' '.join([str(value) for value in array])
-
+from utilities import ToSingleLineOfString
 
 def ResultEqual(expected, actual_list):
-    expected_set = set(expected.split(' '))
+    expected_set = set(expected.split(' ')) if expected else set()
+    if len(expected_set) != len(actual_list):
+        print 'Length not equal (expected: %d, actual: %d)' % (len(expected_set), len(actual_list))
+        return False
     for actual in actual_list:
         if not expected_set.__contains__(actual):
+            print 'Expected element: %s' % actual
             return False
     return True
 
@@ -18,7 +18,7 @@ class TestSkew(unittest.TestCase):
         dna = 'CATGGGCATCGGCCATACGCC'
         skew_values = skew(dna)
         expected = '0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2'
-        self.assertEqual(expected, ToString(skew_values))
+        self.assertEqual(expected, ToSingleLineOfString(skew_values))
 
 
 class TestMinimumSkewProblem(unittest.TestCase):
@@ -26,14 +26,14 @@ class TestMinimumSkewProblem(unittest.TestCase):
         dna = 'TAAAGACTGCCGAGAGGCCAACACGAGTGCTAGAACGAGGGGCGTAAACGCGGGTCCGAT'
         min_skew_indices = get_minimum_skews(dna)
         expected = '11 24'
-        self.assertEqual(expected, ToString(min_skew_indices))
+        self.assertEqual(expected, ToSingleLineOfString(min_skew_indices))
 
     def test_extra_dataset(self):
         with open('Datasets/MinimumSkewProblem_data01.txt', 'r') as datafile:
             dna = datafile.readline().strip()
         min_skew_indices = get_minimum_skews(dna)
         expected = '89969 89970 89971 90345 90346'
-        self.assertEqual(expected, ToString(min_skew_indices))
+        self.assertEqual(expected, ToSingleLineOfString(min_skew_indices))
 
     def test_dataset_01(self):
         """
@@ -43,7 +43,7 @@ class TestMinimumSkewProblem(unittest.TestCase):
         dna = 'ACCG'
         min_skew_indices = get_minimum_skews(dna)
         expected = '3'
-        self.assertEqual(expected, ToString(min_skew_indices))
+        self.assertEqual(expected, ToSingleLineOfString(min_skew_indices))
 
     def test_dataset_02(self):
         """
@@ -52,7 +52,7 @@ class TestMinimumSkewProblem(unittest.TestCase):
         dna = 'ACCC'
         min_skew_indices = get_minimum_skews(dna)
         expected = '4'
-        self.assertEqual(expected, ToString(min_skew_indices))
+        self.assertEqual(expected, ToSingleLineOfString(min_skew_indices))
 
     def test_dataset_03(self):
         """
@@ -61,7 +61,7 @@ class TestMinimumSkewProblem(unittest.TestCase):
         dna = 'CCGGGT'
         min_skew_indices = get_minimum_skews(dna)
         expected = '2'
-        self.assertEqual(expected, ToString(min_skew_indices))
+        self.assertEqual(expected, ToSingleLineOfString(min_skew_indices))
 
     def test_dataset_04(self):
         """
@@ -71,7 +71,7 @@ class TestMinimumSkewProblem(unittest.TestCase):
         dna = 'CCGGCCGG'
         min_skew_indices = get_minimum_skews(dna)
         expected = '2 6'
-        self.assertEqual(expected, ToString(min_skew_indices))
+        self.assertEqual(expected, ToSingleLineOfString(min_skew_indices))
 
 
 class TestHammingDistance(unittest.TestCase):
@@ -135,7 +135,7 @@ class TestApproximatePatternMatching(unittest.TestCase):
         d = 3
         matching_positions = approximate_pattern_matching(pattern, dna, d)
         expected = '6 7 26 27'
-        self.assertEqual(expected, ToString(matching_positions))
+        self.assertEqual(expected, ToSingleLineOfString(matching_positions))
 
     def test_dataset_01(self):
         pattern = 'AAA'
@@ -143,7 +143,7 @@ class TestApproximatePatternMatching(unittest.TestCase):
         d = 2
         matching_positions = approximate_pattern_matching(pattern, dna, d)
         expected = '4 5 6 7 8 11 12 13 14 15'
-        self.assertEqual(expected, ToString(matching_positions))
+        self.assertEqual(expected, ToSingleLineOfString(matching_positions))
 
     def test_dataset_02(self):
         pattern = 'GAGCGCTGG'
@@ -151,7 +151,7 @@ class TestApproximatePatternMatching(unittest.TestCase):
         d = 2
         matching_positions = approximate_pattern_matching(pattern, dna, d)
         expected = '0 30 66'
-        self.assertEqual(expected, ToString(matching_positions))
+        self.assertEqual(expected, ToSingleLineOfString(matching_positions))
 
     def test_dataset_03(self):
         pattern = 'AATCCTTTCA'
@@ -159,7 +159,7 @@ class TestApproximatePatternMatching(unittest.TestCase):
         d = 3
         matching_positions = approximate_pattern_matching(pattern, dna, d)
         expected = '3 36 74 137'
-        self.assertEqual(expected, ToString(matching_positions))
+        self.assertEqual(expected, ToSingleLineOfString(matching_positions))
 
     def test_dataset_04(self):
         pattern = 'CCGTCATCC'
@@ -167,7 +167,7 @@ class TestApproximatePatternMatching(unittest.TestCase):
         d = 3
         matching_positions = approximate_pattern_matching(pattern, dna, d)
         expected = '0 7 36 44 48 72 79 112'
-        self.assertEqual(expected, ToString(matching_positions))
+        self.assertEqual(expected, ToSingleLineOfString(matching_positions))
 
     def test_dataset_05(self):
         pattern = 'TTT'
@@ -175,7 +175,7 @@ class TestApproximatePatternMatching(unittest.TestCase):
         d = 3
         matching_positions = approximate_pattern_matching(pattern, dna, d)
         expected = '0 1 2 3'
-        self.assertEqual(expected, ToString(matching_positions))
+        self.assertEqual(expected, ToSingleLineOfString(matching_positions))
 
     def test_dataset_06(self):
         pattern = 'CCA'
@@ -183,7 +183,7 @@ class TestApproximatePatternMatching(unittest.TestCase):
         d = 0
         matching_positions = approximate_pattern_matching(pattern, dna, d)
         expected = '0'
-        self.assertEqual(expected, ToString(matching_positions))
+        self.assertEqual(expected, ToSingleLineOfString(matching_positions))
 
     def test_extra_dataset(self):
         with open('Datasets/ApproximatePatternMatchingProblem_data01.txt', 'r') as datafile:
@@ -194,7 +194,7 @@ class TestApproximatePatternMatching(unittest.TestCase):
             datafile.readline()
             expected = datafile.readline().strip()
         matching_positions = approximate_pattern_matching(pattern, dna, d)
-        self.assertEqual(expected, ToString(matching_positions))
+        self.assertEqual(expected, ToSingleLineOfString(matching_positions))
 
 
 class TestApproximatePatternCount(unittest.TestCase):
@@ -243,7 +243,7 @@ class TestFrequentWordsWithMismatches(unittest.TestCase):
         expected = 'GATG ATGC ATGT'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_01(self):
         dna = 'AAAAAAAAAA'
@@ -253,7 +253,7 @@ class TestFrequentWordsWithMismatches(unittest.TestCase):
         expected = 'AA AC AG CA AT GA TA'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_02(self):
         dna = 'AGTCAGTC'
@@ -263,7 +263,7 @@ class TestFrequentWordsWithMismatches(unittest.TestCase):
         expected = 'TCTC CGGC AAGC TGTG GGCC AGGT ATCC ACTG ACAC AGAG ATTA TGAC AATT CGTT GTTC GGTA AGCA CATC'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
 
     def test_dataset_03(self):
@@ -274,7 +274,7 @@ class TestFrequentWordsWithMismatches(unittest.TestCase):
         expected = 'GGTA'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_04(self):
         dna = 'ATA'
@@ -284,7 +284,7 @@ class TestFrequentWordsWithMismatches(unittest.TestCase):
         expected = 'GTA ACA AAA ATC ATA AGA ATT CTA TTA ATG'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_05(self):
         dna = 'AAT'
@@ -294,7 +294,7 @@ class TestFrequentWordsWithMismatches(unittest.TestCase):
         expected = 'AAT'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_06(self):
         dna = 'TAGCG'
@@ -304,7 +304,7 @@ class TestFrequentWordsWithMismatches(unittest.TestCase):
         expected = 'GG TG'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_extra_dataset(self):
         with open('Datasets/FrequentWordsWithMismatchesProblem_data01.txt', 'r') as datafile:
@@ -318,7 +318,7 @@ class TestFrequentWordsWithMismatches(unittest.TestCase):
         words = frequent_words_with_mismatches(dna, k, d)
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
 
 class TestFrequentWordsWithMismatchesAndReverseComplements(unittest.TestCase):
@@ -331,7 +331,7 @@ class TestFrequentWordsWithMismatchesAndReverseComplements(unittest.TestCase):
         expected = 'ATGT ACAT'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_01(self):
         dna = 'AAAAAAAAAA'
@@ -341,7 +341,7 @@ class TestFrequentWordsWithMismatchesAndReverseComplements(unittest.TestCase):
         expected = 'AT TA'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_02(self):
         dna = 'AGTCAGTC'
@@ -351,7 +351,7 @@ class TestFrequentWordsWithMismatchesAndReverseComplements(unittest.TestCase):
         expected = 'AATT GGCC'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_03(self):
         dna = 'AATTAATTGGTAGGTAGGTA'
@@ -361,7 +361,7 @@ class TestFrequentWordsWithMismatchesAndReverseComplements(unittest.TestCase):
         expected = 'AATT'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_04(self):
         dna = 'ATA'
@@ -371,7 +371,7 @@ class TestFrequentWordsWithMismatchesAndReverseComplements(unittest.TestCase):
         expected = 'AAA AAT ACA AGA ATA ATC ATG ATT CAT CTA GAT GTA TAA TAC TAG TAT TCT TGT TTA TTT'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_05(self):
         dna = 'AAT'
@@ -381,7 +381,7 @@ class TestFrequentWordsWithMismatchesAndReverseComplements(unittest.TestCase):
         expected = 'AAT ATT'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_dataset_06(self):
         dna = 'TAGCG'
@@ -391,7 +391,7 @@ class TestFrequentWordsWithMismatchesAndReverseComplements(unittest.TestCase):
         expected = 'CA CC GG TG'
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))
 
     def test_extra_dataset(self):
         with open('Datasets/FrequentWordsWithMismatchesAndReverseComplementsProblem_data01.txt', 'r') as datafile:
@@ -405,4 +405,4 @@ class TestFrequentWordsWithMismatchesAndReverseComplements(unittest.TestCase):
         words = frequent_words_with_mismatches_and_reverse_complements(dna, k, d)
         passed = ResultEqual(expected, words)
         if not passed:
-            self.assertEqual(expected, ToString(words))
+            self.assertEqual(expected, ToSingleLineOfString(words))

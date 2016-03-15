@@ -122,7 +122,7 @@ def find_clump(dna, k, t, L):
         begin = dna[index - 1: index - 1 + k]
         counts[begin] -= 1
         end = dna[index + L - k: index + L]
-        _increase_count(counts, end)
+        increase_count(counts, end)
         for pattern, count in counts.iteritems():
             if count >= t:
                 frequent_set.add(pattern)
@@ -135,11 +135,11 @@ def _count_frequencies(dna, k):
     dict = {}
     for index in range(len(dna)-k+1):
         pattern = dna[index: index + k]
-        _increase_count(dict, pattern)
+        increase_count(dict, pattern)
     return dict
 
 
-def _increase_count(dict, pattern):
+def increase_count(dict, pattern):
     if dict.__contains__(pattern):
         dict[pattern] += 1
     else:

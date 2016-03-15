@@ -116,7 +116,7 @@ def frequent_words_with_mismatches(dna, k, d):
     close = [0] * array_size
     max_count = 0
     for i in range(dna_length - k + 1):
-        neighborhood = _get_neighbours(dna[i:i+k], d)
+        neighborhood = get_neighbours(dna[i:i + k], d)
         for pattern in neighborhood:
             index = _pattern_to_number(pattern)
             count = close[index] + 1
@@ -153,7 +153,7 @@ _bases = ['A', 'C', 'G', 'T']
 _base_ids = {'A': 0, 'C': 1, 'G': 2, 'T': 3}
 
 
-def _get_neighbours(pattern, d):
+def get_neighbours(pattern, d):
     """
     For a given k-mer Pattern, gets all d-neighborhood with Hamming distance not exceeding d from this k-mer.
     :param pattern: the k-mer pattern
@@ -166,6 +166,7 @@ def _get_neighbours(pattern, d):
 
 
 def _find_all_neighbours(pattern, prefix, d, neighbours):
+    if not pattern: return
     sub_pattern = pattern[1:]
     for base in _bases:
         delta_d = 0 if base == pattern[0] else 1
@@ -194,7 +195,7 @@ def frequent_words_with_mismatches_and_reverse_complements(dna, k, d):
     frequency_array = [0] * array_size
 
     for i in range(dna_length - k + 1):
-        neighbourhood = _get_neighbours(dna[i:i+k], d)
+        neighbourhood = get_neighbours(dna[i:i + k], d)
         for pattern in neighbourhood:
             index = _pattern_to_number(pattern)
             close[index] = 1
