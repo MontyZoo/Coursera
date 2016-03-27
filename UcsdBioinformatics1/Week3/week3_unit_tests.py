@@ -67,4 +67,47 @@ class TestMotifEnumeration(unittest.TestCase):
         self.assertTrue(ResultEqual(expected, motifs))
 
 
+class TestFindMediumString(unittest.TestCase):
+    def test_sample(self):
+        dnas = ["AAATTGACGCAT", "GACGACCACGTT", "CGTCAGCGCCTG", "GCTGAGCACCGG", "AGTTCGGGACAG"]
+        k = 3
+        ms = find_median_string(dnas, k)
+        expected = ["GAC"]
+        self.assertEqual(expected, ms)
 
+    def test_dataset_1(self):
+        dnas = ["ACGT", "ACGT", "ACGT"]
+        k = 3
+        ms = find_median_string(dnas, k)
+        expected = ["ACG", "CGT"]
+        self.assertEqual(expected, ms)
+
+    def test_dataset_2(self):
+        dnas = "ATA ACA AGA AAT AAC".split(" ")
+        k = 3
+        ms = find_median_string(dnas, k)
+        expected = ["AAA"]
+        self.assertEqual(expected, ms)
+
+    def test_dataset_3(self):
+        dnas = "AAG AAT".split(" ")
+        k = 3
+        ms = find_median_string(dnas, k)
+        expected = ["AAG", "AAT"]
+        self.assertEqual(expected, ms)
+
+    def test_extra_dataset(self):
+        dnas = ["TGATGATAACGTGACGGGACTCAGCGGCGATGAAGGATGAGT",
+                "CAGCGACAGACAATTTCAATAATATCCGCGGTAAGCGGCGTA",
+                "TGCAGAGGTTGGTAACGCCGGCGACTCGGAGAGCTTTTCGCT",
+                "TTTGTCATGAACTCAGATACCATAGAGCACCGGCGAGACTCA",
+                "ACTGGGACTTCACATTAGGTTGAACCGCGAGCCAGGTGGGTG",
+                "TTGCGGACGGGATACTCAATAACTAAGGTAGTTCAGCTGCGA",
+                "TGGGAGGACACACATTTTCTTACCTCTTCCCAGCGAGATGGC",
+                "GAAAAAACCTATAAAGTCCACTCTTTGCGGCGGCGAGCCATA",
+                "CCACGTCCGTTACTCCGTCGCCGTCAGCGATAATGGGATGAG",
+                "CCAAAGCTGCGAAATAACCATACTCTGCTCAGGAGCCCGATG"]
+        k = 6
+        ms = find_median_string(dnas, k)
+        expected = ["CGGCGA"]
+        self.assertEqual(expected, ms)

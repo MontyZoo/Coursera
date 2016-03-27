@@ -1,6 +1,6 @@
-from Week2.week2_utility import get_neighbours
-from Week1.week1_utility import increase_count
-from collections import OrderedDict
+import itertools
+
+from Week2.week2_utility import get_neighbours, get_hamming_distance
 from math import log
 
 from utilities import ConvertBaseToIndex, ConvertIndexToBase
@@ -88,3 +88,40 @@ def score(motifs):
             profile.add_base(motif[pos])
         profile.calculate_entropy()
     return map(lambda p: p.entropy, profiles)
+
+
+def get_minimum_hamming_distance(pattern, dna):
+    """
+    Hamming Distance Problem: Compute the minimum Hamming distance between a pattern and a DNA string.
+        Input: a pattern string and a dna string (which is usually longer than pattern)
+    :return: The minimum Hamming distance.
+    """
+    k = len(pattern)
+    min_distance = k
+    for index in range(len(dna) - k + 1):
+        sub_dna = dna[index:index+k]
+        distance = get_hamming_distance(pattern, sub_dna)
+        if distance < min_distance:
+            min_distance = distance
+    return min_distance
+
+
+def find_median_string(dnas, k):
+    """
+    Median String Problem: Find a median string.
+    :param dnas: A collection of strings Dna
+    :param k: length of k-mer
+    :return: All k-mer Patterns that minimizes d(Pattern, Dna).
+    """
+    ms = []
+    min_d = len(dnas) * k
+    for l in itertools.product('ACGT', repeat=k):
+        k_mer = ''.join(l)
+        d = reduce(lambda a,b: a+b, map(lambda dna: get_minimum_hamming_distance(k_mer, dna), dnas))
+        if d < min_d:
+            min_d = d
+            ms = [k_mer]
+        elif d == min_d:
+            ms.append(k_mer)
+    return ms
+
