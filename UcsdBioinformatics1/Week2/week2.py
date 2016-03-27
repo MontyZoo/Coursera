@@ -88,3 +88,21 @@ def q4():
 def q5():
     neighbours = frequent_words_with_mismatches('TGCAT', 5, 2)
     print len(neighbours)
+
+
+def quiz2_1():
+    print 'Q2: %d' % get_hamming_distance('TGACCCGTTATGCTCGAGTTCGGTCAGAGCGTCATTGCGAGTAGTCGTTTGCTTTCTCAAACTCC',
+                                          'GAGCGATTAAGCGTGACAGCCCCAGGGAACCCACAAAACGTGATCGCAGTCCATCCGATCATACA')
+
+def quiz2_2():
+    print 'Q3: %s' % ToSingleLineOfString(get_maximum_skews('GCATACACTTCCCAGTAGGTACTG'))
+
+def quiz2_3():
+    print 'Q4: %s' % str(approximate_pattern_count('AA', 'TACGCATTACAAAGCACA', 1))
+
+def quiz2():
+    quiz2_1()
+    quiz2_2()
+    quiz2_3()
+
+quiz2()
