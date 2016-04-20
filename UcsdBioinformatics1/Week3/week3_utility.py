@@ -1,3 +1,4 @@
+# coding=utf-8
 import itertools
 
 from Week2.week2_utility import get_neighbours, get_hamming_distance
@@ -26,18 +27,11 @@ def _find_motifs(dna, k, d):
 def motif_enumeration(dnas, k, d):
     """
     Find all (k, d)-motifs in a list of dna strings
-    :param dna: the dna string
+    :param dnas: a list of DNA strings
     :param k: k-mer
     :param d: the maximally allowed distance for a match
     :return: All (k, d)-motifs in Dna
     """
-
-    '''
-    motifs = set()
-    for dna in dnas:
-        motifs = motifs.union(_find_motifs(dna, k, d))
-    return motifs
-    '''
 
     motifs = []
     for dna in dnas:
@@ -46,7 +40,7 @@ def motif_enumeration(dnas, k, d):
     return reduce(and_, motifs)
 
 
-class Profile():
+class Profile:
     def __init__(self):
         self._counts = [0] * 4
         self._probabilities = [0] * 4
@@ -58,16 +52,15 @@ class Profile():
         self._counts[index] += 1
 
     def calculate_entropy(self):
-        total = reduce(lambda a,b: a+b, self._counts)
-        max = -1
+        total = reduce(lambda a, b: a+b, self._counts)
+        max_val = -1
         max_index = -1
         for index in range(4):
             self._probabilities[index] = float(self._counts[index]) / total
-            if self._probabilities[index] > max:
-                max = self._probabilities[index]
+            if self._probabilities[index] > max_val:
+                max_val = self._probabilities[index]
                 max_index = index
         self.consensus = ConvertIndexToBase(max_index)
-        temp = map(lambda p: p * log(p, 2) if p > 0 else 0, self._probabilities)
         self.entropy = sum(map(lambda p: p * log(p, 2) if p > 0 else 0, self._probabilities))
         if self.entropy < 0:
             self.entropy *= -1
@@ -94,6 +87,8 @@ def get_minimum_hamming_distance(pattern, dna):
     """
     Hamming Distance Problem: Compute the minimum Hamming distance between a pattern and a DNA string.
         Input: a pattern string and a dna string (which is usually longer than pattern)
+    :param pattern: a DNA pattern string
+    :param dna: A DNA string, usually longer than the pattern
     :return: The minimum Hamming distance.
     """
     k = len(pattern)
@@ -117,7 +112,7 @@ def find_median_string(dnas, k):
     min_d = len(dnas) * k
     for l in itertools.product('ACGT', repeat=k):
         k_mer = ''.join(l)
-        d = reduce(lambda a,b: a+b, map(lambda dna: get_minimum_hamming_distance(k_mer, dna), dnas))
+        d = reduce(lambda a, b: a + b, map(lambda dna: get_minimum_hamming_distance(k_mer, dna), dnas))
         if d < min_d:
             min_d = d
             ms = [k_mer]
@@ -125,3 +120,23 @@ def find_median_string(dnas, k):
             ms.append(k_mer)
     return ms
 
+
+def get_profile_most_probable_k_mer(dna, profile_matrix):
+    """
+    Profile-most Probable k-mer Problem: Find a Profile-most probable k-mer in a string.
+    :param dna: a DNA string
+    :param profile_matrix: a 4 × k matrix Profile
+    :return: A Profile-most probable k-mer in Text.
+    """
+    k = len(profile_matrix[0])
+    max_probability = 0
+    max_k_mer = None
+    for index in range(len(dna) - k + 1):
+        k_mer = dna[index: index+k]
+        probability = 1
+        for pos, base in enumerate(k_mer):
+            probability *= profile_matrix[ConvertBaseToIndex(base)][pos]
+        if probability > max_probability:
+            max_probability = probability
+            max_k_mer = k_mer
+    return max_k_mer

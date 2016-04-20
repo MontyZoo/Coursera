@@ -1,4 +1,6 @@
 import unittest
+
+from utilities import ConvertTextToMatrix
 from week3_utility import *
 from Week2.week2_unit_tests import ResultEqual
 
@@ -111,3 +113,52 @@ class TestFindMediumString(unittest.TestCase):
         ms = find_median_string(dnas, k)
         expected = ["CGGCGA"]
         self.assertEqual(expected, ms)
+
+
+class TestGetProfileMostProbableKmer(unittest.TestCase):
+    def test_sample(self):
+        dna = "ACCTGTTTATTGCCTAAGTTCCGAACAAACCCAATATAGCCCGAGGGCCT"
+        k = 5
+        matrix = ConvertTextToMatrix("0.2 0.2 0.3 0.2 0.3 " +
+                                     "0.4 0.3 0.1 0.5 0.1 " +
+                                     "0.3 0.3 0.5 0.2 0.4 " +
+                                     "0.1 0.2 0.1 0.1 0.2", k)
+        k_mer = get_profile_most_probable_k_mer(dna, matrix)
+        expected = "CCGAG"
+        self.assertEqual(expected, k_mer)
+
+    def test_dataset_1(self):
+        dna = "AGCAGCTTTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATCTGAACTGGTTACCTGCCGTGAGTAAAT"
+        k = 8
+        matrix = ConvertTextToMatrix("0.7 0.2 0.1 0.5 0.4 0.3 0.2 0.1 " +
+                                     "0.2 0.2 0.5 0.4 0.2 0.3 0.1 0.6 " +
+                                     "0.1 0.3 0.2 0.1 0.2 0.1 0.4 0.2 " +
+                                     "0.0 0.3 0.2 0.0 0.2 0.3 0.3 0.1", k)
+        k_mer = get_profile_most_probable_k_mer(dna, matrix)
+        expected = "AGCAGCTT"
+        self.assertEqual(expected, k_mer)
+
+    def test_dataset_2(self):
+        dna = "TTACCATGGGACCGCTGACTGATTTCTGGCGTCAGCGTGATGCTGGTGTGGATGACATTCCGGTGCGCTTTGTAAGCAGAGTTTA"
+        k = 12
+        matrix = ConvertTextToMatrix("0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.1 0.2 0.3 0.4 0.5 " +
+                                     "0.3 0.2 0.1 0.1 0.2 0.1 0.1 0.4 0.3 0.2 0.2 0.1 " +
+                                     "0.2 0.1 0.4 0.3 0.1 0.1 0.1 0.3 0.1 0.1 0.2 0.1 " +
+                                     "0.3 0.4 0.1 0.1 0.1 0.1 0.0 0.2 0.4 0.4 0.2 0.3", k)
+        k_mer = get_profile_most_probable_k_mer(dna, matrix)
+        expected = "AAGCAGAGTTTA"
+        self.assertEqual(expected, k_mer)
+
+    def test_extra_dataset(self):
+        dna = "TGCCCGAGCTATCTTATGCGCATCGCATGCGGACCCTTCCCTAGGCTTGTCGCAAGCCATTATCCTGGGCGCTAGTTGCGCGAGTATTGTCAGACCTGATGACGCTGTAAGCTAGCGTGTTCAGCGGCGCGCAATGAGCGGTTTAGATCACAGAATCCTTTGGCGTATTCCTATCCGTTACATCACCTTCCTCACCCCTA"
+        k = 6
+        matrix = ConvertTextToMatrix("0.364 0.333 0.303 0.212 0.121 0.242 " +
+                                     "0.182 0.182 0.212 0.303 0.182 0.303 " +
+                                     "0.121 0.303 0.182 0.273 0.333 0.303 " +
+                                     "0.333 0.182 0.303 0.212 0.364 0.152", k)
+        k_mer = get_profile_most_probable_k_mer(dna, matrix)
+        expected = "TGTCGC"
+        self.assertEqual(expected, k_mer)
+
+
+

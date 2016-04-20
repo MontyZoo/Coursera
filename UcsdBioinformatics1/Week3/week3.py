@@ -1,5 +1,5 @@
 from week3_utility import *
-from utilities import ToSingleLineOfString
+from utilities import ToSingleLineOfString, ConvertTextToMatrix
 
 
 def motif_enumeration_problem():
@@ -28,7 +28,6 @@ def calculate_motif_entropy_scores():
                 "T   a   G   G   G   G   A   a   c   T   a   C",
                 "T   C   G   G   G   t   A   T   a   a   C   C"]
     motifs = map(lambda s: s.upper(), map(lambda s: s.replace(' ', ''), original))
-    #print ' '.join(map(lambda f: '%.4f' % f, score(motifs)))
     print str(sum(score(motifs)))
 
 
@@ -48,4 +47,16 @@ def medium_string_problem():
     print ms
 
 
-medium_string_problem()
+def profile_most_Probable_k_mer_problem():
+    with open('Datasets/ProfileMostProbableKMerProblem_data01.txt', 'r') as datafile:
+        dna = datafile.readline().strip()
+        k = int(datafile.readline().strip())
+        matrix_text = ''
+        for loop in range(5):
+            matrix_text += datafile.readline().strip()
+            matrix_text += ' '
+    matrix = ConvertTextToMatrix(matrix_text.strip(), k)
+    print get_profile_most_probable_k_mer(dna, matrix)
+
+
+profile_most_Probable_k_mer_problem()

@@ -22,3 +22,9 @@ def ConvertIndexToBase(index):
         raise Exception("Cannot convert index '%d' to nucleic acid." % index)
     bases = ['A', 'C', 'G', 'T']
     return bases[index]
+
+
+def ConvertTextToMatrix(text, num_columns):
+    text_array = text.split(" ")
+    float_array = map(lambda t: float(t), text_array)
+    return [float_array[i:i+num_columns] for i in range(0, len(float_array), num_columns)]
